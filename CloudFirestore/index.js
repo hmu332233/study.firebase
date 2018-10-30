@@ -14,8 +14,16 @@ const getUserWords = async () => {
   });
 }
 
-setUserWord({
-  id: '123456',
-  content: '방금 씀'
-})
-getUserWords();
+const getUserWordsById = async () => {
+  const userWordDocs = await db.collection('user_words').where('id', '==', '123').get();
+  userWordDocs.forEach(doc => {
+    console.log(doc.id, '=>', doc.data());
+  });
+}
+
+// setUserWord({
+//   id: '123456',
+//   content: '방금 씀'
+// })
+// getUserWords();
+getUserWordsById();
