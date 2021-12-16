@@ -3,8 +3,13 @@ import { HashRouter, Route, Routes } from 'react-router-dom';
 import Auth from '../routes/Auth';
 import Home from '../routes/Home';
 
-function Router() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+type Props = {
+  isLoggedIn: boolean
+}
+
+function AppRouter({
+  isLoggedIn
+}: Props) {
   return (
     <HashRouter>
       <Routes>
@@ -18,4 +23,4 @@ function Router() {
   );
 };
 
-export default Router;
+export default AppRouter;
