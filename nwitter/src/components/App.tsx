@@ -5,7 +5,7 @@ import AppRouter from 'components/AppRouter';
 import { authService } from 'firebaseInstance';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(Boolean(authService.currentUser));
+  const [isLoggedIn, setIsLoggedIn] = useState(Boolean(authService.auth.currentUser));
   return (
     <AppRouter isLoggedIn={isLoggedIn} />
   );
