@@ -3,6 +3,12 @@ import React, { useState } from 'react';
 
 function Auth() {
   const [newAccount, setNewAccount] = useState(true);
+  const [error, setError] = useState('');
+
+  const toggleAccount = () => {
+    setNewAccount(v => !v);
+  }
+
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
 
@@ -26,8 +32,9 @@ function Auth() {
         );
       }
       console.log(data);
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+
+      setError(err.message as string);
     }
     
   }
@@ -36,9 +43,10 @@ function Auth() {
       <form onSubmit={handleSubmit}>
         <input name="email" type="email" placeholder="Email" required />
         <input name="password" type="password" placeholder="Password" required />
-        {/* <input type="submit" value="Log In" /> */}
+        <span>{error}</span>
         <button type="submit">{newAccount ? 'Create Acccount' : 'Log In'}</button>
       </form>
+      <span onClick={toggleAccount}>{newAccount ? 'Sign In' : 'Create Account'}</span>
       <div>
         <button>Continue with Goole</button>
         <button>Continue with Github</button>

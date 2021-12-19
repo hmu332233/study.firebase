@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged  } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -22,6 +22,7 @@ export const authService = {
   auth: getAuth(),
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  onAuthStateChanged 
 };
 
 export default app;
