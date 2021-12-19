@@ -1,5 +1,6 @@
-import { authService } from 'firebaseInstance';
 import React, { useState } from 'react';
+
+import { authService } from 'firebaseInstance';
 
 function Auth() {
   const [newAccount, setNewAccount] = useState(true);
@@ -7,6 +8,21 @@ function Auth() {
 
   const toggleAccount = () => {
     setNewAccount(v => !v);
+  }
+
+  const handleSocialClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    const { name } = event.currentTarget;
+
+    const providerMap: { [key: string]: typeof authService.GoogleAuthProvider | typeof authService.GithubAuthProvider } = {
+      google: authService.GoogleAuthProvider,
+      github: authService.GithubAuthProvider,
+    };
+
+    const provider = new providerMap[name]();
+
+    await authService.signInWithPopup(authService.auth, provider);
   }
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
@@ -23,7 +39,6 @@ function Auth() {
           email as string,
           password as string,
         );
-        
       } else {
         data = await authService.createUserWithEmailAndPassword(
           authService.auth,
@@ -48,8 +63,8 @@ function Auth() {
       </form>
       <span onClick={toggleAccount}>{newAccount ? 'Sign In' : 'Create Account'}</span>
       <div>
-        <button>Continue with Goole</button>
-        <button>Continue with Github</button>
+        <button name="google" onClick={handleSocialClick}>Continue with Goole</button>
+        <button name="github" onClick={handleSocialClick}>Continue with Github</button>
       </div>
     </div>
   );

@@ -9,10 +9,11 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(Boolean(authService.auth.currentUser));
 
   useEffect(() => {
-    authService.onAuthStateChanged(authService.auth, (user) => {
+    const unsubscribe = authService.onAuthStateChanged(authService.auth, (user) => {
       setIsLoggedIn(Boolean(user));
       setInit(true);
     });
+    return unsubscribe;
   }, []);
 
 
