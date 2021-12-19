@@ -16,9 +16,14 @@ function App() {
     return unsubscribe;
   }, []);
 
+  if (!init) {
+    return <span>Initalizing..</span>;
+  }
 
   return (
-    init ? <AppRouter isLoggedIn={isLoggedIn} /> : <span>Initalizing..</span>
+    <>
+      <AppRouter isLoggedIn={isLoggedIn} />
+    </>
   );
 }
 
