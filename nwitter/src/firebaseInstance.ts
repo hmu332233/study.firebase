@@ -4,7 +4,7 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, signOut } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -28,6 +28,12 @@ export const authService = {
   onAuthStateChanged,
   signInWithPopup,
   signOut,
+};
+
+export const dbService = {
+  db: getFirestore(),
+  collection,
+  addDoc
 };
 
 export default app;

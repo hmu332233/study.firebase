@@ -1,11 +1,24 @@
 import React from 'react';
 
+import { dbService } from '../firebaseInstance';
+
 function Home() {
-  const handleSubmit = (event: React.SyntheticEvent) => {
+  const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
 
-    const formData = new FormData(event.target as HTMLFormElement);
+    const formElement = event.target as HTMLFormElement;
+    const formData = new FormData(formElement);
     const { contents } = Object.fromEntries(formData);
+
+    const docRef = await dbService.addDoc(
+      dbService.collection(dbService.db, 'nweets'), 
+      {
+        contents,
+        createdAt: Date.now(),
+      }
+    );
+
+    formElement.reset();
   }
   return (
     <div>
