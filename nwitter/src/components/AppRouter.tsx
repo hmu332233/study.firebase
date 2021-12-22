@@ -5,22 +5,23 @@ import Auth from 'routes/Auth';
 import Home from 'routes/Home';
 
 import Navigation from 'components/Navigation';
+import { User } from 'firebase/auth';
 
 type Props = {
-  isLoggedIn: boolean
+  userObj: User | null,
 }
 
 function AppRouter({
-  isLoggedIn
+  userObj
 }: Props) {
   return (
     <HashRouter>
       <Navigation />
       <Routes>
         <Route path="/">
-        {isLoggedIn ? (
+        {userObj ? (
           <>
-            <Route index element={<Home />} />
+            <Route index element={<Home userObj={userObj} />} />
             <Route path="/profile" element={<Profile />} />
           </>
         ) : (

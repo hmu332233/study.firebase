@@ -1,3 +1,4 @@
+import { User } from '@firebase/auth';
 import React, { useEffect, useState } from 'react';
 
 import { dbService } from '../firebaseInstance';
@@ -8,23 +9,25 @@ type Nweet = {
   createdAt: number,
 }
 
-function Home() {
+type Props = {
+  userObj: User,
+}
+
+function Home({
+  userObj,
+}: Props) {
   const [nweets, setNweets] = useState<Array<Nweet>>([]);
-  const getNweets = async () => {
-    const querySnapshot = await dbService.getDocs(dbService.collection(dbService.db, 'nweets'));
-    querySnapshot.forEach((doc) => {
-      setNweets(prev => {
-        const nweet: Nweet = {
-          ...doc.data() as Nweet,
-          id: doc.id,
-        };
-        return [nweet, ...prev];
-      })
-    });
-  }
 
   useEffect(() => {
-    getNweets();
+    dbService.onSnapshot(dbService.collection(dbService.db, 'nweets'), (snapshot) => {
+      const nweetArray = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Array<Nweet>;
+      
+      setNweets(nweetArray);
+      console.log(snapshot.docs);
+    });
   }, []);
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
@@ -37,6 +40,7 @@ function Home() {
     const docRef = await dbService.addDoc(
       dbService.collection(dbService.db, 'nweets'), 
       {
+        creatorId: userObj.uid,
         contents,
         createdAt: Date.now(),
       }
