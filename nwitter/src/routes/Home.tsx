@@ -43,10 +43,27 @@ function Home({
 
     formElement.reset();
   }
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // event.target.files;
+    const { target: { files }} = event;
+    if (!files) {
+      return;
+    }
+
+    const file = files[0];
+    const fileReader = new FileReader();
+    fileReader.onloadend = (finishedEvent) => {
+
+    };
+    fileReader.readAsDataURL(file);
+  };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <input type="text" name="contents" maxLength={120} placeholder="What's on your mind?" />
+        <input type="file" accept="image/*" onChange={handleFileChange} />
         <button type="submit">Nweet</button>
       </form>
       <div>
