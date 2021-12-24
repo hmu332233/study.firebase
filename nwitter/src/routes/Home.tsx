@@ -1,13 +1,8 @@
 import { User } from '@firebase/auth';
+import Nweet from 'components/Nweet';
 import React, { useEffect, useState } from 'react';
 
 import { dbService } from '../firebaseInstance';
-
-type Nweet = {
-  id: string,
-  contents: string,
-  createdAt: number,
-}
 
 type Props = {
   userObj: User,
@@ -56,9 +51,7 @@ function Home({
       </form>
       <div>
         {nweets.map(nweet => (
-          <div key={nweet.id}>
-            <h4>{nweet.contents}</h4>
-          </div>
+          <Nweet key={nweet.id} nweet={nweet} isOwner={nweet.creatorId === userObj.uid} />
         ))}
       </div>
     </div>
