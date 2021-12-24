@@ -12,6 +12,7 @@ function Home({
   userObj,
 }: Props) {
   const [nweets, setNweets] = useState<Array<Nweet>>([]);
+  const [attachment, setAttachment] = useState<string | null>();
 
   useEffect(() => {
     dbService.onSnapshot(dbService.collection(dbService.db, 'nweets'), (snapshot) => {
@@ -53,11 +54,24 @@ function Home({
 
     const file = files[0];
     const fileReader = new FileReader();
-    fileReader.onloadend = (finishedEvent) => {
-
+    fileReader.onloadend = (progressEvent) => {
+      if (!progressEvent.target) {
+        return;
+      }
+      const { result } = progressEvent.target;
+      setAttachment(result as string);
+      
     };
     fileReader.readAsDataURL(file);
+
+    // 아래와 같이 하는 것도 가능
+    // URL.createObjectURL(file);
   };
+
+  const clearAttachment = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    setAttachment(null);
+  }
 
   return (
     <div>
@@ -65,6 +79,12 @@ function Home({
         <input type="text" name="contents" maxLength={120} placeholder="What's on your mind?" />
         <input type="file" accept="image/*" onChange={handleFileChange} />
         <button type="submit">Nweet</button>
+        {attachment && (
+          <div>
+            <img src={attachment} width={50} height={50} alt="preview" />
+            <button type="button" onClick={clearAttachment}>Clear</button>
+          </div>
+        )}
       </form>
       <div>
         {nweets.map(nweet => (
