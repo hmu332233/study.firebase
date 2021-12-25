@@ -22,7 +22,7 @@ function AppRouter({
         {userObj ? (
           <>
             <Route index element={<Home userObj={userObj} />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<Profile userObj={userObj} />} />
           </>
         ) : (
           <>

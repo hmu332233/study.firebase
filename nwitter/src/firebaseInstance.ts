@@ -13,7 +13,7 @@ import {
   GithubAuthProvider,
   signOut,
 } from 'firebase/auth';
-import { getFirestore, collection, addDoc, getDocs, onSnapshot, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, getDocs, onSnapshot, deleteDoc, doc, updateDoc, query, where, orderBy } from 'firebase/firestore';
 import { getStorage, ref, uploadString, getDownloadURL, deleteObject } from 'firebase/storage';
 
 // Your web app's Firebase configuration
@@ -49,6 +49,9 @@ export const dbService = {
   deleteDoc,
   doc,
   updateDoc,
+  query,
+  where,
+  orderBy,
 };
 
 export const storageService = {
