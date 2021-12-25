@@ -2,7 +2,9 @@ import { User } from '@firebase/auth';
 import Nweet from 'components/Nweet';
 import React, { useEffect, useState } from 'react';
 
-import { dbService } from '../firebaseInstance';
+import { v4 as uuidv4 } from 'uuid';
+
+import { dbService, storageService } from '../firebaseInstance';
 
 type Props = {
   userObj: User,
@@ -12,7 +14,7 @@ function Home({
   userObj,
 }: Props) {
   const [nweets, setNweets] = useState<Array<Nweet>>([]);
-  const [attachment, setAttachment] = useState<string | null>();
+  const [attachment, setAttachment] = useState<{ type: string, data: string }>();
 
   useEffect(() => {
     dbService.onSnapshot(dbService.collection(dbService.db, 'nweets'), (snapshot) => {
@@ -31,18 +33,27 @@ function Home({
 
     const formElement = event.target as HTMLFormElement;
     const formData = new FormData(formElement);
+    console.log(Object.fromEntries(formData));
     const { contents } = Object.fromEntries(formData);
 
-    const docRef = await dbService.addDoc(
-      dbService.collection(dbService.db, 'nweets'), 
-      {
-        creatorId: userObj.uid,
-        contents,
-        createdAt: Date.now(),
-      }
-    );
+    const fileRef = storageService.ref(storageService.storage, `${userObj.uid}/${uuidv4()}`);
 
-    formElement.reset();
+    if (attachment) {
+      const fileSnapshot = await storageService.uploadString(fileRef, attachment.data, 'data_url');
+      console.log(fileSnapshot);
+    }
+    
+
+    // const docRef = await dbService.addDoc(
+    //   dbService.collection(dbService.db, 'nweets'), 
+    //   {
+    //     creatorId: userObj.uid,
+    //     contents,
+    //     createdAt: Date.now(),
+    //   }
+    // );
+
+    // formElement.reset();
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +70,10 @@ function Home({
         return;
       }
       const { result } = progressEvent.target;
-      setAttachment(result as string);
+      setAttachment({
+        type: file.type,
+        data: result as string,
+      });
       
     };
     fileReader.readAsDataURL(file);
@@ -70,7 +84,7 @@ function Home({
 
   const clearAttachment = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    setAttachment(null);
+    setAttachment(undefined);
   }
 
   return (
@@ -81,7 +95,7 @@ function Home({
         <button type="submit">Nweet</button>
         {attachment && (
           <div>
-            <img src={attachment} width={50} height={50} alt="preview" />
+            <img src={attachment.data} width={50} height={50} alt="preview" />
             <button type="button" onClick={clearAttachment}>Clear</button>
           </div>
         )}
