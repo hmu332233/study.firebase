@@ -14,7 +14,7 @@ import {
   signOut,
 } from 'firebase/auth';
 import { getFirestore, collection, addDoc, getDocs, onSnapshot, deleteDoc, doc, updateDoc } from 'firebase/firestore';
-import { getStorage, ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, uploadString, getDownloadURL, deleteObject } from 'firebase/storage';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -56,6 +56,7 @@ export const storageService = {
   ref, // bucket과 동일
   uploadString,
   getDownloadURL,
+  deleteObject,
 };
 
 export default app;

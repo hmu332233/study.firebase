@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { dbService } from 'firebaseInstance';
+import { dbService, storageService } from 'firebaseInstance';
 
 type Props = {
   nweet: Nweet,
@@ -46,6 +46,9 @@ function Nweet({
           nweet.id,
         )
       );
+
+      const fileRef = storageService.ref(storageService.storage, nweet.attachmentUrl);
+      storageService.deleteObject(fileRef);
     }
   };
 
