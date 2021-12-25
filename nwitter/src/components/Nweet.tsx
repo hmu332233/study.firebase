@@ -59,6 +59,9 @@ function Nweet({
       ) : (
         <>
           <h4>{nweet.contents}</h4>
+          {nweet.attachmentUrl && (
+            <img src={nweet.attachmentUrl} width={100} height={100} alt="nweet-img" />
+          )}
           {isOwner && (
             <>
               <button onClick={toggleEditing}>Edit</button>

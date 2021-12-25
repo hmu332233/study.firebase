@@ -35,29 +35,29 @@ function Home({
     const formData = new FormData(formElement);
     console.log(Object.fromEntries(formData));
     const { contents } = Object.fromEntries(formData);
+    let attachmentUrl: string | undefined;
 
     const fileRef = storageService.ref(storageService.storage, `${userObj.uid}/${uuidv4()}`);
-
     if (attachment) {
       const fileSnapshot = await storageService.uploadString(fileRef, attachment.data, 'data_url');
       console.log(fileSnapshot);
+      attachmentUrl = await storageService.getDownloadURL(fileSnapshot.ref);
     }
     
+    const docRef = await dbService.addDoc(
+      dbService.collection(dbService.db, 'nweets'), 
+      {
+        creatorId: userObj.uid,
+        contents,
+        createdAt: Date.now(),
+        attachmentUrl,
+      }
+    );
 
-    // const docRef = await dbService.addDoc(
-    //   dbService.collection(dbService.db, 'nweets'), 
-    //   {
-    //     creatorId: userObj.uid,
-    //     contents,
-    //     createdAt: Date.now(),
-    //   }
-    // );
-
-    // formElement.reset();
+    formElement.reset();
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // event.target.files;
     const { target: { files }} = event;
     if (!files) {
       return;
@@ -95,7 +95,7 @@ function Home({
         <button type="submit">Nweet</button>
         {attachment && (
           <div>
-            <img src={attachment.data} width={50} height={50} alt="preview" />
+            <img src={attachment.data} width={100} height={100} alt="preview" />
             <button type="button" onClick={clearAttachment}>Clear</button>
           </div>
         )}
