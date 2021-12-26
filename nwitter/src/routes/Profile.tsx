@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { authService, dbService } from 'firebaseInstance';
@@ -29,9 +29,25 @@ function Profile({
     authService.signOut(authService.auth);
     navigate('/', { replace: true });
   }
+
+  const handleSubmit = async (event: React.SyntheticEvent) => {
+    event.preventDefault();
+
+    const formElement = event.target as HTMLFormElement;
+    const formData = new FormData(formElement);
+    const { name } = Object.fromEntries(formData);
+
+    await authService.updateProfile(userObj, {
+      displayName: name as string,
+    });
+  };
+
   return (
     <div>
-      <span>Profile</span>
+      <form onSubmit={handleSubmit}>
+        <input type="text" name="name" placeholder="Display name" />
+        <button type="submit">Update Profile</button>
+      </form>
       <button onClick={handleClick}>Log Out</button>
     </div>
   );

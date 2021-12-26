@@ -16,7 +16,7 @@ function AppRouter({
 }: Props) {
   return (
     <HashRouter>
-      <Navigation />
+      <Navigation userObj={userObj} />
       <Routes>
         <Route path="/">
         {userObj ? (

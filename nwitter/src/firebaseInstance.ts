@@ -12,6 +12,7 @@ import {
   GoogleAuthProvider,
   GithubAuthProvider,
   signOut,
+  updateProfile,
 } from 'firebase/auth';
 import { getFirestore, collection, addDoc, getDocs, onSnapshot, deleteDoc, doc, updateDoc, query, where, orderBy } from 'firebase/firestore';
 import { getStorage, ref, uploadString, getDownloadURL, deleteObject } from 'firebase/storage';
@@ -38,6 +39,7 @@ export const authService = {
   onAuthStateChanged,
   signInWithPopup,
   signOut,
+  updateProfile,
 };
 
 export const dbService = {
