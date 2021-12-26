@@ -11,16 +11,17 @@ function App() {
 
   useEffect(() => {
     const unsubscribe = authService.onAuthStateChanged(authService.auth, (firebaseUser) => {
-      if (!firebaseUser) {
-        return setUserObj(null);
+      if (firebaseUser) {
+        const user: User = {
+          uid: firebaseUser.uid,
+          displayName: firebaseUser.displayName,
+        };
+  
+        setUserObj(user);
+      } else {
+        setUserObj(null);
       }
-
-      const user: User = {
-        uid: firebaseUser.uid,
-        displayName: firebaseUser.displayName,
-      };
-
-      setUserObj(user);
+      
       setInit(true);
     });
     return unsubscribe;
