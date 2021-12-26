@@ -25,3 +25,9 @@ service cloud.firestore {
   }
 }
 ```
+- api 보안
+  - gcp console에서 firebase key에 대해서 특정 도메인만 접근 가능하도록 보안 설정 가능
+  - firebase 도메인도 꼭 추가
+  - [gcp console - Credentials](https://console.cloud.google.com/apis/credentials)
+  ![image](https://user-images.githubusercontent.com/10302969/147416130-dbad12cb-abb9-4a09-9a26-bab8c9cf0c4e.png)
+
