@@ -1,4 +1,3 @@
-import { User } from '@firebase/auth';
 import Nweet from 'components/Nweet';
 import React, { useEffect, useState } from 'react';
 

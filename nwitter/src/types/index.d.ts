@@ -5,3 +5,8 @@ type Nweet = {
   creatorId: string,
   attachmentUrl?: string,
 }
+
+type User = {
+  displayName: string | null,
+  uid: string,
+};

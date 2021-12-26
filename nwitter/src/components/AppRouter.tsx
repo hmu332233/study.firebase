@@ -5,14 +5,15 @@ import Auth from 'routes/Auth';
 import Home from 'routes/Home';
 
 import Navigation from 'components/Navigation';
-import { User } from 'firebase/auth';
 
 type Props = {
   userObj: User | null,
+  refreshUser: () => void,
 }
 
 function AppRouter({
-  userObj
+  userObj,
+  refreshUser,
 }: Props) {
   return (
     <HashRouter>
@@ -22,7 +23,7 @@ function AppRouter({
         {userObj ? (
           <>
             <Route index element={<Home userObj={userObj} />} />
-            <Route path="/profile" element={<Profile userObj={userObj} />} />
+            <Route path="/profile" element={<Profile userObj={userObj} refreshUser={refreshUser} />} />
           </>
         ) : (
           <>

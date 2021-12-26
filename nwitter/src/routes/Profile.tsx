@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { authService, dbService } from 'firebaseInstance';
-import { User } from 'firebase/auth';
 
 type Props = {
   userObj: User,
+  refreshUser: () => void,
 };
 
 function Profile({
   userObj,
+  refreshUser,
 }: Props) {
   let navigate = useNavigate();
   
@@ -37,9 +38,15 @@ function Profile({
     const formData = new FormData(formElement);
     const { name } = Object.fromEntries(formData);
 
-    await authService.updateProfile(userObj, {
+    if (!authService.auth.currentUser) {
+      return;
+    }
+
+    await authService.updateProfile(authService.auth.currentUser, {
       displayName: name as string,
     });
+
+    refreshUser();
   };
 
   return (

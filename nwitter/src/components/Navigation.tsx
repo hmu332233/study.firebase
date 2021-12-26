@@ -1,4 +1,3 @@
-import { User } from 'firebase/auth';
 import React, { useState } from 'react';
 import { HashRouter, Link, Route, Routes } from 'react-router-dom';
 
